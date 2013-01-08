@@ -47,7 +47,7 @@ for(my $i = 1; $i <= 17; $i++) {
         print STDERR "L".$i.":";
         print STDERR "Going to run $java $hadoop_opts -cp $classpath org.apache.pig.Main -param reducers=$reducers $scriptdir/L".$i.".pig\n";
         my $s = time();
-        $cmd = "$java $hadoop_opts -cp $classpath org.apache.pig.Main -param reducers=4 $scriptdir/L". $i.".pig" ;
+        $cmd = "$java $hadoop_opts -cp $classpath org.apache.pig.Main -param reducers=$reducers $scriptdir/L". $i.".pig" ;
         print STDERR `$cmd 2>&1`;
         my $e = time();
         $pig_times += $e - $s;
