@@ -57,10 +57,20 @@ done
 
 # resolve links - $0 may be a softlink
 this="${BASH_SOURCE-$0}"
+while [ -h "$this" ]; do
+    ls=`ls -ld "$this"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '.*/.*' > /dev/null; then
+        this="$link"
+    else
+        this=`dirname "$this"`/"$link"
+    fi
+done
 
 # convert relative path to absolute path
 bin=$(cd -P -- "$(dirname -- "$this")">/dev/null && pwd -P)
 script="$(basename -- "$this")"
+bin=`unset CDPATH; cd "$bin"; pwd`
 this="$bin/$script"
 
 # the root of the Pig installation
@@ -102,8 +112,36 @@ if [ "$PIG_HEAPSIZE" != "" ]; then
     JAVA_HEAP_MAX="-Xmx""$PIG_HEAPSIZE""m"
 fi
 
+# Add installed version of Hadoop to classpath
+HADOOP_HOME=${HADOOP_HOME:-${MAPR_HOME:-/opt/mapr}/hadoop/hadoop-0.20.2}
+JAVA_LIBRARY_PATH="$HADOOP_HOME/lib/native/Linux-amd64-64"
+ 
+home_save=$HADOOP_HOME
+. $HADOOP_HOME/bin/hadoop-config.sh --config $HADOOP_HOME/conf
+HADOOP_HOME=$home_save
+ 
+NEWPATH=$(echo $HADOOP_HOME/hadoop-*core*.jar $HADOOP_HOME/lib/* | sed -e 's/ /:/g' )
+export CLASSPATH
+if [ ! -z "$CLASSPATH" ]
+then
+  CLASSPATH=$CLASSPATH:$NEWPATH
+else
+  CLASSPATH=$NEWPATH
+fi
+
+if [ ! -z "$HADOOP_CLASSPATH" ] ; then
+  CLASSPATH=$CLASSPATH:$HADOOP_CLASSPATH
+fi
+if [ ! -z "$HADOOP_CONF_DIR" ] ; then
+  CLASSPATH=$(echo $HADOOP_CONF_DIR $HADOOP_CONF_DIR/*-site* | sed -e 's/ /:/g'):$CLASSPATH
+else 
+  CLASSPATH=$(echo $HADOOP_HOME/conf $HADOOP_HOME/conf/*-site* | sed -e 's/ /:/g'):$CLASSPATH
+fi
+
+
+
 # CLASSPATH initially contains $PIG_CONF_DIR
-CLASSPATH="${PIG_CONF_DIR}"
+CLASSPATH="$CLASSPATH:${PIG_CONF_DIR}"
 CLASSPATH=${CLASSPATH}:$JAVA_HOME/lib/tools.jar
 
 # add user-specified CLASSPATH
@@ -192,7 +230,7 @@ if [ -z "$HADOOP_BIN" ]; then
 fi
 
 # if using HBase, likely want to include HBase config
-HBASE_CONF_DIR=${HBASE_CONF_DIR:-/etc/hbase}
+#HBASE_CONF_DIR=${HBASE_CONF_DIR:-/etc/hbase}
 if [ -n "$HBASE_CONF_DIR" ] && [ -d "$HBASE_CONF_DIR" ]; then
     CLASSPATH=$HBASE_CONF_DIR:$CLASSPATH
 fi
@@ -228,6 +266,11 @@ if $cygwin; then
     CLASSPATH=`cygpath -p -w "$CLASSPATH"`
     PIG_HOME=`cygpath -d "$PIG_HOME"`
     PIG_LOG_DIR=`cygpath -d "$PIG_LOG_DIR"`
+fi
+
+if [ ! -z "$JAVA_LIBRARY_PATH" ]
+then
+  PIG_OPTS="$PIG_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
 fi
  
 # restore ordinary behaviour
