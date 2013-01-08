@@ -33,8 +33,7 @@
 
     <path id="pigjar.id">
       <fileset dir="..">
-        <include name="pig*.jar"/>
-        <exclude name="pig*-withouthadoop.jar"/>
+        <include name="pig-${pig.version}.jar"/>
       </fileset>
     </path>
 
