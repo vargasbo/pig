@@ -495,7 +495,15 @@ public class JobControlCompiler{
 
                 // set out filespecs
                 String outputPathString = st.getSFile().getFileName();
-                if (!outputPathString.contains("://") || outputPathString.startsWith("hdfs://")) {
+                URI fileuri = null;
+                try {
+                  fileuri = new URI(outputPathString);
+                } catch(URISyntaxException e) {
+                  throw new JobCreationException("URISyntaxException:Output Path URI is malformed:" + fileuri);
+                }
+                if ((fileuri.getScheme()==null && fileuri.getAuthority()==null)
+                    || !fileuri.getScheme().equals("file:///")) {
+
                     conf.set("pig.streaming.log.dir",
                             new Path(outputPathString, LOG_DIR).toString());
                 } else {
@@ -775,20 +783,7 @@ public class JobControlCompiler{
         long size = 0;
         
         for (String input : inputs){
-            //Using custom uri parsing because 'new Path(location).toUri()' fails
-            // for some valid uri's (eg jdbc style), and 'new Uri(location)' fails
-            // for valid hdfs paths that contain curly braces
-            if(!UriUtil.isHDFSFileOrLocalOrS3N(input)){
-                //skip  if it is not hdfs or local file or s3n
-                continue;
-            }
-
-            //the input file location might be a list of comma separeated files, 
-            // separate them out
             for(String location : LoadFunc.getPathStrings(input)){
-                if(! UriUtil.isHDFSFileOrLocalOrS3N(location)){
-                    continue;
-                }
                 Path path = new Path(location);
                 FileSystem fs = path.getFileSystem(conf);
                 FileStatus[] status=fs.globStatus(path);

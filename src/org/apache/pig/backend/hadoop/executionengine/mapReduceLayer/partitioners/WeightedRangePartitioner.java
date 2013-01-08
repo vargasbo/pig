@@ -119,6 +119,8 @@ public class WeightedRangePartitioner extends Partitioner<PigNullableWritable, W
                 conf.set("fs.file.impl", configuration.get("fs.file.impl"));
             if (configuration.get("fs.hdfs.impl")!=null)
                 conf.set("fs.hdfs.impl", configuration.get("fs.hdfs.impl"));
+            if (configuration.get("fs.maprfs.impl")!=null)
+              conf.set("fs.maprfs.impl", configuration.get("fs.maprfs.impl"));
             if (configuration.getBoolean("pig.tmpfilecompression", false))
             {
                 conf.setBoolean("pig.tmpfilecompression", true);

@@ -357,8 +357,9 @@ public final class JobStats extends Operator {
                     PigStatsUtil.REDUCE_INPUT_RECORDS).getCounter();
             reduceOutputRecords = taskgroup.getCounterForName(
                     PigStatsUtil.REDUCE_OUTPUT_RECORDS).getCounter();
+            String fsuri = URI.create(conf.get("fs.default.name")).getScheme().toUpperCase();
             hdfsBytesRead = hdfsgroup.getCounterForName(
-                    PigStatsUtil.HDFS_BYTES_READ).getCounter();      
+                fsuri+"_BYTES_WRITTEN").getCounter();
             hdfsBytesWritten = hdfsgroup.getCounterForName(
                     PigStatsUtil.HDFS_BYTES_WRITTEN).getCounter();            
             spillCount = counters.findCounter(
@@ -493,21 +494,19 @@ public final class JobStats extends Operator {
             LOG.warn("invalid syntax for output location: " + location, e1);
         }
         long bytes = -1;
-        if (uri != null
-                && (uri.getScheme() == null || uri.getScheme()
-                        .equalsIgnoreCase("hdfs"))) {
-            try {
-                Path p = new Path(location);
-                FileSystem fs = p.getFileSystem(conf);
-                FileStatus[] lst = fs.listStatus(p);
-                if (lst != null) {
-                    for (FileStatus status : lst) {
-                        bytes += status.getLen();
-                    } 
-                }
-            } catch (IOException e) {
-                LOG.warn("unable to get byte written of the job", e);
-            }
+        if (uri != null) {
+          try {
+              Path p = new Path(location);
+              FileSystem fs = p.getFileSystem(conf);
+              FileStatus[] lst = fs.listStatus(p);
+              if (lst != null) {
+                  for (FileStatus status : lst) {
+                      bytes += status.getLen();
+                  } 
+              }
+          } catch (IOException e) {
+              LOG.warn("unable to get byte written of the job", e);
+          }
         }
         OutputStats ds = new OutputStats(location, bytes, records,
                 (state == JobState.SUCCESS));  
