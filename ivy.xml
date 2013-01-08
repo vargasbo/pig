@@ -49,7 +49,7 @@
     <dependency org="checkstyle" name="checkstyle" rev="${checkstyle.version}"
       conf="checkstyle->master"/>
     <!-- <dependency org="antlr" name="antlr" rev="${antlr.version}"
-      conf="checkstyle->master"/> -->
+      conf="checkstyle->master"/-->
     <dependency org="commons-beanutils" name="commons-beanutils-core" rev="${commons-beanutils.version}"
       conf="checkstyle->master"/>
     <dependency org="xmlenc" name="xmlenc" rev="${xmlenc.version}"
@@ -94,8 +94,8 @@
       conf="hadoop23->master"/>
     <dependency org="log4j" name="log4j" rev="${log4j.version}"
       conf="compile->master"/>
-    <dependency org="com.sun.jersey" name="jersey-core" rev="${jersey-core.version}"
-      conf="hadoop20->default"/>
+    <!--dependency org="com.sun.jersey" name="jersey-core" rev="${jersey-core.version}"
+      conf="hadoop20->default"/-->
     <dependency org="org.apache.hadoop" name="hadoop-core" rev="${hadoop-core.version}"
       conf="hadoop20->default"/>
     <dependency org="org.apache.hadoop" name="hadoop-test" rev="${hadoop-test.version}"
