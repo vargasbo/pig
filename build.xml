@@ -169,6 +169,9 @@
     <property name="src.shims.test.dir" value="${basedir}/shims/test/hadoop${hadoopversion}" />
 
     <property name="hadoop.jar" value="${hadoop.root}/lib/hadoop-${hadoop-core.version}-dev-core.jar" />
+    <!--property name="hadoop.jar" value="${hadoop.root}/build/hadoop-${hadoop-core.version}-dev-core.jar" /-->
+    <property name="hbase.jar" value="${hbase.root}/hbase-${hbase.version}.jar" />
+    <property name="hbase.tests.jar" value="${hbase.root}/hbase-${hbase.version}-tests.jar" />
 	<property name="asfrepo" value="https://repository.apache.org"/>
 	<property name="asfsnapshotrepo" value="${asfrepo}/content/repositories/snapshots"/>
 	<property name="mvnrepo" value="http://repo2.maven.org/maven2"/>
@@ -225,6 +228,8 @@
         <fileset dir="${lib.dir}" includes="*.jar"/>
         <fileset file="${ivy.lib.dir}/${zookeeper.jarfile}"/>
         <fileset file="${hadoop.jar}"/>
+        <fileset file="${hbase.jar}"/>
+        <fileset file="${hbase.tests.jar}"/>
         <fileset dir="${ivy.lib.dir}" includes="*.jar"/>
     </path>
 
@@ -606,8 +611,10 @@
                 </section>
             </manifest>
             <zipfileset src="${lib.dir}/${automaton.jarfile}" />
+            <zipfileset src="${hadoop.jar}" />
+            <zipfileset src="${hbase.jar}" />
+            <zipgroupfileset dir="${ivy.lib.dir}" includes="hbase-${hbase.version}.jar" />
             <zipgroupfileset dir="${ivy.lib.dir}">
-                <include name="hadoop-core-${hadoop-core.version}.jar" />
                 <include name="hadoop-*-${hadoop-common.version}*.jar" />
                 <include name="antlr-runtime-${antlr.version}.jar" />
                 <include name="ST4-${stringtemplate.version}.jar" />

@@ -94,10 +94,10 @@
       conf="hadoop23->master"/>
     <dependency org="log4j" name="log4j" rev="${log4j.version}"
       conf="compile->master"/>
-    <!--dependency org="com.sun.jersey" name="jersey-core" rev="${jersey-core.version}"
-      conf="hadoop20->default"/-->
-    <dependency org="org.apache.hadoop" name="hadoop-core" rev="${hadoop-core.version}"
+    <dependency org="com.sun.jersey" name="jersey-core" rev="${jersey-core.version}"
       conf="hadoop20->default"/>
+    <!--dependency org="org.apache.hadoop" name="hadoop-core" rev="${hadoop-core.version}"
+      conf="hadoop20->default"/-->
     <dependency org="org.apache.hadoop" name="hadoop-test" rev="${hadoop-test.version}"
       conf="hadoop20->default"/>
     <dependency org="org.apache.hadoop" name="hadoop-annotations" 
@@ -197,7 +197,7 @@
 
     <dependency org="org.jruby" name="jruby-complete" rev="${jruby.version}" conf="compile->master"/>
 
-    <dependency org="org.apache.hbase" name="hbase" rev="${hbase.version}" conf="compile->master">
+    <!--dependency org="org.apache.hbase" name="hbase" rev="${hbase.version}" conf="compile->master">
       <artifact name="hbase" type="jar"/>
       <artifact name="hbase" type="test-jar" ext="jar" m:classifier="tests"/>
       <exclude org="org.apache.thrift" module="thrift"/>
@@ -218,7 +218,7 @@
       <exclude org="com.sun.jersey" module="jersey-server"/>
       <exclude org="com.sun.jersey" module="jersey-json"/>
       <exclude org="asm" module="asm"/>
-    </dependency>
+    </dependency-->
     <!-- for piggybank -->
     <dependency org="hsqldb" name="hsqldb" rev="${hsqldb.version}"
       conf="test->default" />

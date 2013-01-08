@@ -767,7 +767,7 @@ public class HBaseStorage extends LoadFunc implements StoreFuncInterface, LoadPu
             schema_ = (ResourceSchema) ObjectSerializer.deserialize(serializedSchema);
         }
 
-        m_conf = initialiseHBaseClassLoaderResources(job);
+        m_conf = job.getConfiguration();
     }
 
     @Override
