@@ -535,7 +535,7 @@
     <!-- ================================================================== -->
     <!-- Utility to build pig.jar and pig-withouthadoop.jar                 -->
     <!-- ================================================================== -->
-    <target name="jar-all" depends="jar,jar-withouthadoop" description="Create pig-all.jar and pig-withouthadoop.jar">
+    <target name="jar-all" depends="jar,jar-withouthadoop,pigperf" description="Create pig-all.jar and pig-withouthadoop.jar">
     </target>
 
     <target name="include-meta" if="isHadoop23">
