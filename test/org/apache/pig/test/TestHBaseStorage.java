@@ -654,7 +654,7 @@ public class TestHBaseStorage {
                 "org.apache.pig.backend.hadoop.hbase.HBaseStorage('"
                 + TESTCOLUMN_A + " " + TESTCOLUMN_B + " "
                 + TESTCOLUMN_C + "','-caster HBaseBinaryConverter')");
-        HTable table = new HTable(TESTTABLE_2);
+        HTable table = new HTable(conf, TESTTABLE_2);
         ResultScanner scanner = table.getScanner(new Scan());
         Iterator<Result> iter = scanner.iterator();
         int i = 0;
@@ -726,7 +726,7 @@ public class TestHBaseStorage {
                 + TESTCOLUMN_A + " " + TESTCOLUMN_B + " "
                 + TESTCOLUMN_C + "')");
 
-        HTable table = new HTable(TESTTABLE_2);
+        HTable table = new HTable(conf, TESTTABLE_2);
         ResultScanner scanner = table.getScanner(new Scan());
         Iterator<Result> iter = scanner.iterator();
         int i = 0;
@@ -790,7 +790,7 @@ public class TestHBaseStorage {
                 "org.apache.pig.backend.hadoop.hbase.HBaseStorage('"
                 + TESTCOLUMN_A + " " + TESTCOLUMN_B + "')");
 
-        HTable table = new HTable(TESTTABLE_2);
+        HTable table = new HTable(conf, TESTTABLE_2);
         ResultScanner scanner = table.getScanner(new Scan());
         Iterator<Result> iter = scanner.iterator();
         int i = 0;
@@ -824,7 +824,7 @@ public class TestHBaseStorage {
                 "org.apache.pig.backend.hadoop.hbase.HBaseStorage('"
                 + TESTCOLUMN_A + " " + TESTCOLUMN_B + "')");
 
-        HTable table = new HTable(TESTTABLE_2);
+        HTable table = new HTable(conf, TESTTABLE_2);
         ResultScanner scanner = table.getScanner(new Scan());
         Iterator<Result> iter = scanner.iterator();
         int i = 0;
@@ -918,7 +918,7 @@ public class TestHBaseStorage {
         table = util.createTable(Bytes.toBytesBinary(tableName),
                 COLUMNFAMILY);
         } catch (Exception e) {
-            table = new HTable(Bytes.toBytesBinary(tableName));
+            table = new HTable(conf, Bytes.toBytesBinary(tableName));
         }
 
         if (initData) {
