@@ -93,25 +93,6 @@ if [ -f "${PIG_CONF_DIR}/pig-env.sh" ]; then
     . "${PIG_CONF_DIR}/pig-env.sh"
 fi
 
-# some Java parameters
-if [ "$JAVA_HOME" != "" ]; then
-    #echo "run java in $JAVA_HOME"
-    JAVA_HOME=$JAVA_HOME
-fi
-    
-if [ "$JAVA_HOME" = "" ]; then
-    echo "Error: JAVA_HOME is not set."
-    exit 1
-fi
-
-JAVA=$JAVA_HOME/bin/java
-JAVA_HEAP_MAX=-Xmx1000m 
-
-# check envvars which might override default args
-if [ "$PIG_HEAPSIZE" != "" ]; then
-    JAVA_HEAP_MAX="-Xmx""$PIG_HEAPSIZE""m"
-fi
-
 # Add installed version of Hadoop to classpath
 HADOOP_HOME=${HADOOP_HOME:-${MAPR_HOME:-/opt/mapr}/hadoop/hadoop-0.20.2}
 JAVA_LIBRARY_PATH="$HADOOP_HOME/lib/native/Linux-amd64-64"
@@ -136,6 +117,25 @@ if [ ! -z "$HADOOP_CONF_DIR" ] ; then
   CLASSPATH=$(echo $HADOOP_CONF_DIR $HADOOP_CONF_DIR/*-site* | sed -e 's/ /:/g'):$CLASSPATH
 else 
   CLASSPATH=$(echo $HADOOP_HOME/conf $HADOOP_HOME/conf/*-site* | sed -e 's/ /:/g'):$CLASSPATH
+fi
+
+# some Java parameters
+if [ "$JAVA_HOME" != "" ]; then
+    #echo "run java in $JAVA_HOME"
+    JAVA_HOME=$JAVA_HOME
+fi
+    
+if [ "$JAVA_HOME" = "" ]; then
+    echo "Error: JAVA_HOME is not set."
+    exit 1
+fi
+
+JAVA=$JAVA_HOME/bin/java
+JAVA_HEAP_MAX=-Xmx1000m 
+
+# check envvars which might override default args
+if [ "$PIG_HEAPSIZE" != "" ]; then
+    JAVA_HEAP_MAX="-Xmx""$PIG_HEAPSIZE""m"
 fi
 
 
