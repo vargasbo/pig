@@ -169,9 +169,10 @@
     <property name="src.shims.test.dir" value="${basedir}/shims/test/hadoop${hadoopversion}" />
 
     <!-- <property name="hadoop.jar" value="${hadoop.root}/lib/hadoop-${hadoop-core.version}-dev-core.jar" /> -->
-    <property name="hadoop.jar" value="${hadoop.root}/build/hadoop-${hadoop-core.version}-dev-core.jar"/>
-    <property name="hbase.jar" value="${hbase.root}/hbase-${hbase.version}.jar" />
-    <property name="hbase.tests.jar" value="${hbase.root}/hbase-${hbase.version}-tests.jar" />
+    <property name="hadoop-core.version" value="0.20.2-2.1.2-SNAPSHOT"/>
+    <property name="hadoop.jar" value="hadoop-core-${hadoop-core.version}.jar"/>
+    <property name="hbase.jar" value="hbase-${hbase.version}.jar" />
+    <property name="hbase.tests.jar" value="hbase-${hbase.version}-tests.jar" />
 	<property name="asfrepo" value="https://repository.apache.org"/>
 	<property name="asfsnapshotrepo" value="${asfrepo}/content/repositories/snapshots"/>
 	<property name="mvnrepo" value="http://repo2.maven.org/maven2"/>
@@ -611,11 +612,9 @@
                 </section>
             </manifest>
             <zipfileset src="${lib.dir}/${automaton.jarfile}" />
-            <zipfileset src="${hadoop.jar}" />
-            <zipfileset src="${hbase.jar}" />
             <zipgroupfileset dir="${ivy.lib.dir}" includes="hbase-${hbase.version}.jar" />
             <zipgroupfileset dir="${ivy.lib.dir}">
-                <include name="hadoop-*-${hadoop-common.version}*.jar" />
+                <include name="hadoop-*-${hadoop-core.version}*.jar" />
                 <include name="antlr-runtime-${antlr.version}.jar" />
                 <include name="ST4-${stringtemplate.version}.jar" />
                 <include name="junit-${junit.version}.jar" />
@@ -1196,17 +1195,13 @@
          description="To deploy pig jar to apache snapshot's repository">
     </target>
 
-     <target name="signanddeploy" if="staging" depends="sign">
+     <target name="signanddeploy" if="staging">
         <artifact:pom file="${pig.pom}" id="pig"/>
         <artifact:install-provider artifactId="wagon-http" version="${wagon-http.version}"/>
         <artifact:deploy file="${pig-core.jar}">
-        <remoteRepository id="apache.staging.https" url="${asfstagingrepo}"/>
+        <remoteRepository id="mapr-releases" url="${env.MAPR_RELEASES_REPO}"/>
         <pom refid="pig"/>
-     	   <attach file="${pig-core.jar}.asc" type="jar.asc"/>
-     	   <attach file="${pig.pom}.asc" type="pom.asc"/>
-           <attach file="${output.jarfile.sources}.asc" type="jar.asc" classifier="sources"/>
            <attach file="${output.jarfile.sources}" classifier="sources" />
-           <attach file="${output.jarfile.javadoc}.asc" type="jar.asc"  classifier="javadoc"/>
            <attach file="${output.jarfile.javadoc}" classifier="javadoc" />
         </artifact:deploy>
     </target>
@@ -1215,19 +1210,19 @@
       <artifact:pom file="${pig.pom}" id="pig"/>
       <artifact:install-provider artifactId="wagon-http" version="${wagon-http.version}"/>
       <artifact:deploy file="${pig-core.jar}">
-              <remoteRepository id="apache.snapshots.https" url="${asfsnapshotrepo}"/>
+              <remoteRepository id="mapr-snapshots" url="${env.MAPR_SNAPSHOTS_REPO}"/>
               <pom refid="pig"/>
           <attach file="${pig-sources.jar}" classifier="sources" />
       	  <attach file="${pig-javadoc.jar}" classifier="javadoc" />
       </artifact:deploy>
       <artifact:pom file="${pigunit.pom}" id="pigunit"/>
       <artifact:deploy file="${pigunit.jarfile}">
-              <remoteRepository id="apache.snapshots.https" url="${asfsnapshotrepo}"/>
+              <remoteRepository id="mapr-snapshots" url="${env.MAPR_SNAPSHOTS_REPO}"/>
               <pom refid="pigunit"/>
       </artifact:deploy>
       <artifact:pom file="${pigsmoke.pom}" id="pigsmoke"/>
       <artifact:deploy file="${smoke.tests.jarfile}">
-              <remoteRepository id="apache.snapshots.https" url="${asfsnapshotrepo}"/>
+              <remoteRepository id="mapr-snapshots" url="${env.MAPR_SNAPSHOTS_REPO}"/>
               <pom refid="pigsmoke"/>
       </artifact:deploy>
    </target>
@@ -1623,5 +1618,49 @@
      <target name="piggybank" depends="jar">
          <ant antfile="contrib/piggybank/java/build.xml" inheritAll="false"/> 
      </target>
+                  <target name="mapr-version">
+                    <echo file="${project.build.directory}/mapr-version.sh">
+#!/bin/bash
+build_user=`whoami`
+build_date=`date`
+build_cwd=`pwd`
+build_hostname=`hostname`
 
+if git status &gt; /dev/null 2&gt;&amp;1 ; then
+  scm=git
+  build_revision=`git log -1 --pretty=format:&quot;%H&quot;`
+  build_url=`git config --get remote.origin.url`
+elif hg st &gt; /dev/null 2&gt;&amp;1 ; then
+  scm=hg
+  build_revision=`hg ident -n | sed 's/[^0-9]//g'`
+  build_url=`hg paths | grep 'default' | sed 's/.*default[^=]*=\s*//g'`
+elif svn info &gt; /dev/null 2&gt;&amp;1 ; then
+  scm=svn
+  build_revision=`svn info | sed -n -e 's/Last Changed Rev: \(.*\)/\1/p'`
+  build_url=`svn info | sed -n -e 's/URL: \(.*\)/\1/p'`
+else
+  scm=file
+  build_revision=&quot;Unknown&quot;
+fi
+
+if [ &quot;${build_url}&quot; = &quot;&quot; ] ; then 
+  build_url=&quot;${scm}://${build_hostname}${build_cwd}&quot;
+fi
+
+build_uname=`uname -a`
+#MapR Version Info
+cat &gt;./target/mapr-build.properties &lt;&lt;EOF
+mapr.buildurl=$build_url
+mapr.builddate=$build_date
+mapr.builduser=$build_user
+mapr.builduname=$build_uname
+mapr.buildhost=$build_hostname
+mapr.buildversion=$build_revision
+EOF
+                    </echo>
+                    <exec executable="sh" failonerror="true">
+                      <arg line="${project.build.directory}/mapr-version.sh"/>
+                    </exec>
+
+                  </target>
 </project>
