@@ -262,6 +262,8 @@
             <format property="timestamp" pattern="MMM dd yyyy, HH:mm:ss" />
         </tstamp>
         <svnversion outputproperty="svn.revision"/>
+       <antcall target="mapr-version" inheritRefs="true" inheritall="true"/>
+       <property file="${basedir}/mapr-build.properties"/>
     </target>
 
     <macrodef name="svnversion">
@@ -512,9 +514,12 @@
 	    <jar duplicate="preserve" jarfile="${output.jarfile.sources}" basedir="${src.dir}/" excludes="docs/**, overview.html">
             <manifest>
                 <section name="org/apache/pig">
-                    <attribute name="Implementation-Vendor" value="Apache" />
-                    <attribute name="Implementation-Title" value="Pig" />
-                    <attribute name="Implementation-Version" value="${version}" />
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
                 </section>
             </manifest>
             <fileset dir="${src.lib.dir}/shock"/>
@@ -525,9 +530,12 @@
         <jar duplicate="preserve" jarfile="${output.jarfile.javadoc}" basedir="${build.javadoc}/">
             <manifest>
                 <section name="org/apache/pig">
-                    <attribute name="Implementation-Vendor" value="Apache" />
-                    <attribute name="Implementation-Title" value="Pig" />
-                    <attribute name="Implementation-Version" value="${version}" />
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
                 </section>
             </manifest>
         </jar>
@@ -549,11 +557,12 @@
             <manifest>
                 <attribute name="Main-Class" value="org.apache.pig.Main" />
                 <section name="org/apache/pig">
-                    <attribute name="Implementation-Vendor" value="Apache" />
-                    <attribute name="Implementation-Title" value="Pig" />
-                    <attribute name="Implementation-Version" value="${version}" />
-                    <attribute name="Build-TimeStamp" value="${timestamp}" />
-                    <attribute name="Svn-Revision" value="${svnString}" />
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
                 </section>
             </manifest>
             <zipfileset src="${output.stage.jarfile}"/>
@@ -589,11 +598,12 @@
             <manifest>
                 <attribute name="Main-Class" value="org.apache.pig.Main" />
                 <section name="org/apache/pig">
-                    <attribute name="Implementation-Vendor" value="Apache" />
-                    <attribute name="Implementation-Title" value="Pig" />
-                    <attribute name="Implementation-Version" value="${version}" />
-                    <attribute name="Build-TimeStamp" value="${timestamp}" />
-                    <attribute name="Svn-Revision" value="${svnString}" />
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
                 </section>
             </manifest>
             <fileset file="${basedir}/conf/pig-default.properties" />
@@ -604,11 +614,12 @@
             <manifest>
                 <attribute name="Main-Class" value="org.apache.pig.Main" />
                 <section name="org/apache/pig">
-                    <attribute name="Implementation-Vendor" value="Apache" />
-                    <attribute name="Implementation-Title" value="Pig" />
-                    <attribute name="Implementation-Version" value="${version}" />
-                    <attribute name="Build-TimeStamp" value="${timestamp}" />
-                    <attribute name="Svn-Revision" value="${svnString}" />
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
                 </section>
             </manifest>
             <zipfileset src="${lib.dir}/${automaton.jarfile}" />
@@ -645,13 +656,14 @@
            includes="org/apache/pig/test/pigunit/**/*">
         <fileset dir="${basedir}" includes="test/data/pigunit/**/*"/>
           <manifest>
-              <section name="org/apache/pig/test/pigunit">
-                  <attribute name="Implementation-Vendor" value="Apache" />
-                  <attribute name="Implementation-Title" value="Pig" />
-                  <attribute name="Implementation-Version" value="${version}" />
-                  <attribute name="Build-TimeStamp" value="${timestamp}" />
-                  <attribute name="Svn-Revision" value="${svnString}" />
-              </section>
+                <section name="org/apache/pig/test/pigunit">
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
+                </section>
           </manifest>
       </jar>
 
@@ -682,11 +694,12 @@
             <manifest>
                 <attribute name="Main-Class" value="org.apache.pig.Main" />
                 <section name="org/apache/pig">
-                    <attribute name="Implementation-Vendor" value="Apache" />
-                    <attribute name="Implementation-Title" value="Pig" />
-                    <attribute name="Implementation-Version" value="${version}" />
-                    <attribute name="Build-TimeStamp" value="${timestamp}" />
-                    <attribute name="Svn-Revision" value="${svnString}" />
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
                 </section>
             </manifest>
             <fileset file="${basedir}/conf/pig-default.properties" />
@@ -724,6 +737,16 @@
     <!-- ================================================================== -->
     <target name="pigperf" depends="compile-test" description="Create pigperf.jar">
         <jar jarfile="pigperf.jar">
+            <manifest>
+                <section name="org/apache/pig">
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
+                </section>
+            </manifest>
             <fileset dir="${test.build.dir}/classes">
                 <include name="org/apache/pig/test/pigmix/**"/>
                 <include name="org/apache/pig/test/utils/datagen/*"/>
@@ -849,6 +872,16 @@
     <target depends="compile-test" name="pigunit-jar" description="create the pigunit jar file">
         <echo> *** Creating pigunit.jar ***</echo>
       <jar destfile="${pigunit.jarfile}">
+            <manifest>
+                <section name="org/apache/pig">
+                  <attribute name="MapR-BuildDate" value="${mapr.builddate}"/>
+                  <attribute name="MapR-BuildHost" value="${mapr.buildhost}"/>
+                  <attribute name="MapR-BuildPlatform" value="${mapr.builduname}"/>
+                  <attribute name="MapR-BuildRevision" value="${mapr.buildversion}"/>
+                  <attribute name="MapR-BuildURL" value="${mapr.buildurl}"/>
+                  <attribute name="MapR-BuildUser" value="${mapr.builduser}"/>
+                </section>
+            </manifest>
           <fileset dir="${test.build.classes}">
               <include name="**/org/apache/pig/pigunit/**"/>
               <include name="**/org/apache/pig/test/Util.**"/>
@@ -1619,7 +1652,7 @@
          <ant antfile="contrib/piggybank/java/build.xml" inheritAll="false"/> 
      </target>
                   <target name="mapr-version">
-                    <echo file="${project.build.directory}/mapr-version.sh">
+                    <echo file="${build.dir}/mapr-version.sh">
 #!/bin/bash
 build_user=`whoami`
 build_date=`date`
@@ -1649,7 +1682,7 @@ fi
 
 build_uname=`uname -a`
 #MapR Version Info
-cat &gt;./target/mapr-build.properties &lt;&lt;EOF
+cat &gt;mapr-build.properties &lt;&lt;EOF
 mapr.buildurl=$build_url
 mapr.builddate=$build_date
 mapr.builduser=$build_user
@@ -1659,7 +1692,7 @@ mapr.buildversion=$build_revision
 EOF
                     </echo>
                     <exec executable="sh" failonerror="true">
-                      <arg line="${project.build.directory}/mapr-version.sh"/>
+                      <arg line="${build.dir}/mapr-version.sh"/>
                     </exec>
 
                   </target>
