@@ -27,6 +27,7 @@ Getting Started
 ===============
 1. To learn about Pig, try http://wiki.apache.org/pig/PigTutorial
 2. To build and run Pig:
+
 ```bash
 $ mkdir pig-mapr
 $ cd pig-mapr
@@ -36,6 +37,7 @@ $ ant jar-withouthadoop
 ```
 To build tests you need to copy
  http://www.eli.sdsu.edu/java-SDSU/sdsuLibJKD12.jar.
+
 ```bash
 $ cd pig-mapr/lib
 $ wget http://www.eli.sdsu.edu/java-SDSU/sdsuLibJKD12.jar
@@ -58,7 +60,7 @@ Add the following dependency to your project's pom.xml
 <dependency>
   <groupId>com.mapr.pig</groupId>
   <artifactId>pig</artifactId>
-  <version>${mapr.hbase.version}</version>
+  <version>${mapr.pig.version}</version>
 </dependency>
 ```
 
