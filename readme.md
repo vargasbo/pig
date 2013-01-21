@@ -50,6 +50,21 @@ $ ant test
 Also see http://wiki.apache.org/pig/BuildPig and
 http://wiki.apache.org/pig/RunPig
 
+To build zebra,
+
+```bash
+$ cd pig-mapr/contrib/zebra
+$ ant jar
+```
+
+To create a tarball corresponding to the mapr-pig package
+
+```bash
+$ cd pig-mapr
+$ tar -czvf build/pig-<pig-version>-<mapr-version>.tar.gz . --exclude "build" --exclude ".git" --exclude "src-gen"
+```
+
+
 3. To check out the function library, try http://wiki.apache.org/pig/PiggyBank
 
 Using Pig artifacts with MapR patches in your Maven Project
