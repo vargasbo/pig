@@ -1,7 +1,5 @@
 -- This script tests reading from a map, flattening a bag of maps, and use of bincond.
---register ../../../../pigperf.jar;
---register ../../../../pigperf.jar;
-register /root/pig-0.9.2/pigperf.jar;
+register ../../../../pigperf.jar;
 A = load '/pigmix/pages625m' using org.apache.pig.test.udf.storefunc.PigPerformanceLoader()
     as (user, action, timespent, query_term, ip_addr, timestamp,
         estimated_revenue, page_info, page_links);

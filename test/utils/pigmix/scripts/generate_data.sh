@@ -11,9 +11,10 @@ then
     exit
 fi
 
-PIG_HOME="/opt/mapr/pig/pig-0.9.0"
+PIG_HOME=$(echo /opt/mapr/pig/pig-*)
 HADOOP_HOME="/opt/mapr/hadoop/hadoop-0.20.2"
-pigjar=$PIG_HOME/pig-0.9.0-core.jar
+pigjar=$PIG_HOME/pig.jar
+
 testjar=$PIG_HOME/pigperf.jar
 PIG_DATA="/pigmix"
 PIG_RESULTS="/pigmixresults"
