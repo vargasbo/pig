@@ -31,7 +31,7 @@
     <property name="pigsmoke.pom" value="${basedir}/ivy/pigsmoke.pom" />
     <property name="pigunit.pom" value="${basedir}/ivy/pigunit.pom" />
     <property name="pig.version" value="0.10.0" />
-    <property name="version" value="${pig.version}-SNAPSHOT" />
+    <property name="version" value="${pig.version}" />
     <property name="final.name" value="${name}-${version}" />
 
     <!-- source properties -->
@@ -169,7 +169,7 @@
     <property name="src.shims.test.dir" value="${basedir}/shims/test/hadoop${hadoopversion}" />
 
     <!-- <property name="hadoop.jar" value="${hadoop.root}/lib/hadoop-${hadoop-core.version}-dev-core.jar" /> -->
-    <property name="hadoop-core.version" value="0.20.2-2.1.2-SNAPSHOT"/>
+    <property name="hadoop-core.version" value="0.20.2-2.1.2"/>
     <property name="hadoop.jar" value="hadoop-core-${hadoop-core.version}.jar"/>
     <property name="hbase.jar" value="hbase-${hbase.version}.jar" />
     <property name="hbase.tests.jar" value="hbase-${hbase.version}-tests.jar" />
@@ -1243,19 +1243,19 @@
       <artifact:pom file="${pig.pom}" id="pig"/>
       <artifact:install-provider artifactId="wagon-http" version="${wagon-http.version}"/>
       <artifact:deploy file="${pig-core.jar}">
-              <remoteRepository id="mapr-snapshots" url="${env.MAPR_SNAPSHOTS_REPO}"/>
+              <remoteRepository id="mapr-snapshots" url="${env.MAPR_RELEASES_REPO}"/>
               <pom refid="pig"/>
           <attach file="${pig-sources.jar}" classifier="sources" />
       	  <attach file="${pig-javadoc.jar}" classifier="javadoc" />
       </artifact:deploy>
       <artifact:pom file="${pigunit.pom}" id="pigunit"/>
       <artifact:deploy file="${pigunit.jarfile}">
-              <remoteRepository id="mapr-snapshots" url="${env.MAPR_SNAPSHOTS_REPO}"/>
+              <remoteRepository id="mapr-snapshots" url="${env.MAPR_RELEASES_REPO}"/>
               <pom refid="pigunit"/>
       </artifact:deploy>
       <artifact:pom file="${pigsmoke.pom}" id="pigsmoke"/>
       <artifact:deploy file="${smoke.tests.jarfile}">
-              <remoteRepository id="mapr-snapshots" url="${env.MAPR_SNAPSHOTS_REPO}"/>
+              <remoteRepository id="mapr-snapshots" url="${env.MAPR_RELEASES_REPO}"/>
               <pom refid="pigsmoke"/>
       </artifact:deploy>
    </target>

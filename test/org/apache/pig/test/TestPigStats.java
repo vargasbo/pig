@@ -50,7 +50,7 @@ public class TestPigStats  {
     public void testPigScriptInConf() throws Exception {
         PrintWriter w = new PrintWriter(new FileWriter("test.pig"));
         w.println("register /mydir/sath.jar");
-        w.println("register /mydir/lib/hadoop-tools-0.20.201.0-SNAPSHOT.jar");
+        w.println("register /mydir/lib/hadoop-tools-0.20.201.0.jar");
         w.println("register /mydir/lib/jackson-core-asl-1.4.2.jar");
         w.println("register /mydir/lib/jackson-mapper-asl-1.4.2.jar");
         w.close();
@@ -66,7 +66,7 @@ public class TestPigStats  {
         
         String expected = 
             "register /mydir/sath.jar\n" +
-            "register /mydir/lib/hadoop-tools-0.20.201.0-SNAPSHOT.jar\n" +
+            "register /mydir/lib/hadoop-tools-0.20.201.0.jar\n" +
             "register /mydir/lib/jackson-core-asl-1.4.2.jar\n"  +
             "register /mydir/lib/jackson-mapper-asl-1.4.2.jar\n";
         
